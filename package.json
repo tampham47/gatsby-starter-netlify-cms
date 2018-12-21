@@ -42,10 +42,18 @@
     "build": "npm run clean && gatsby build",
     "develop": "npm run clean && gatsby develop",
     "serve": "gatsby serve",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"{gatsby-*.js,src/**/*.js}\"",
+    "eslint": "eslint --ext .jsx,.js ./",
+    "fix-eslint": "eslint --ext .jsx,.js ./ --fix -o ./.eslint.log -f stylish",
+    "prettier": "prettier --ignore-path ./.gitignore ./**/*.{js,jsx,json,css,md}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-css-modules": "^2.10.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.2.1",
+    "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
     "rimraf": "^2.6.2"
   }
