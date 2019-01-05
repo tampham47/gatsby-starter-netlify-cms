@@ -1,0 +1,101 @@
+.header {
+  background-color: #283149;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+  }
+  &__title {
+    // the height of header should be 64xp
+    margin-left: -1rem;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 20px 1rem;
+    line-height: 24px;
+  }
+
+  &__nav {}
+
+  &__nav-item {
+    display: inline-block;
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+
+.market-list {}
+.market-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  border-bottom: 1px solid #f7f7f7;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+
+  &:hover {
+    background-color: #f7f7f7;
+    border-radius: 0.5rem;
+  }
+
+  &--header {
+    font-size: 14px;
+  }
+
+  &>div {
+    margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__icon .img {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    border-radius: 100%;
+  }
+
+  &__icon {
+    flex: 0 0 32px;
+  }
+  &__name {
+    flex: 1;
+  }
+  &__24h {
+    flex: 2;
+    text-align: right;
+  }
+  &__price {
+    flex: 2;
+    text-align: right;
+  }
+  &__fee {
+    flex: 2;
+    text-align: right;
+  }
+  &__order-qty {
+    flex: 2;
+    text-align: right;
+  }
+  &__action {
+    flex: 2;
+    text-align: right;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  opacity: 0.6;
+  color: black;
+}
