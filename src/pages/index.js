@@ -4,15 +4,15 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import MarketItem from '../components/MarketItem';
 
-const getOrderValue = p => {
-  const value =
-    (p.marginEnabled ? 1 : 0) * 1000 +
-    1 / (p.minOrderQty || 1) +
-    (p.price ? 1 : -1) * 1000 +
-    (!p.disabled ? 1 : -1) * 10000000;
+// const getOrderValue = p => {
+//   const value =
+//     (p.marginEnabled ? 1 : 0) * 1000 +
+//     1 / (p.minOrderQty || 1) +
+//     (p.price ? 1 : -1) * 1000 +
+//     (!p.disabled ? 1 : -1) * 10000000;
 
-  return value;
-};
+//   return value;
+// };
 export default class IndexPage extends React.PureComponent {
   render() {
     const { data } = this.props;
@@ -20,11 +20,11 @@ export default class IndexPage extends React.PureComponent {
     const { edges: tmpList } = allProduct;
 
     const marketList = tmpList
-      .sort((a, b) => {
-        const da = getOrderValue(a.node);
-        const db = getOrderValue(b.node);
-        return db - da;
-      })
+      // .sort((a, b) => {
+      //   const da = getOrderValue(a.node);
+      //   const db = getOrderValue(b.node);
+      //   return db - da;
+      // })
       .map(i => i.node);
 
     return (
