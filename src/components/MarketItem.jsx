@@ -25,7 +25,7 @@ const MarketItem = ({ model }) => (
     <div className="market-item__order-qty">{model.minOrderQty}</div>
     <div className="market-item__action">
       <a
-        href={`https://app.liquid.com/exchange/${model.currencyPairCode}`}
+        href={`https://app.liquid.com/exchange/${model.base}${model.quote}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -34,7 +34,7 @@ const MarketItem = ({ model }) => (
       <span>・</span>
       <a
         className={clname({ disabled: !model.marginEnabled })}
-        href={`https://app.liquid.com/margin/${model.currencyPairCode}`}
+        href={`https://app.liquid.com/margin/${model.base}${model.quote}`}
         target="_blank"
         rel="noopener noreferrer"
       >
