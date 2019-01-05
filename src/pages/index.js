@@ -4,25 +4,15 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import MarketItem from '../components/MarketItem';
 
-export default class IndexPage extends React.PureComponent {
+export default class IndexPage extends React.Component {
   render() {
     const { data } = this.props;
     const { allProduct } = data;
     const { edges: tmpList } = allProduct;
 
-    const marketList = tmpList.sort((a, b) => {
-      const da =
-        (a.node.marginEnabled ? 1 : 0) * 1000 +
-        1 / (a.node.minOrderQty || 1) +
-        (a.node.price ? 1 : -1) * 1000 +
-        (!a.node.disabled ? 1 : -1) * 10000000;
-      const db =
-        (b.node.marginEnabled ? 1 : 0) * 1000 +
-        1 / (b.node.minOrderQty || 1) +
-        (b.node.price ? 1 : -1) * 1000 +
-        (!b.node.disabled ? 1 : -1) * 10000000;
-      return db - da;
-    });
+    const marketList = tmpList
+      .map(i => i.node)
+      .sort((a, b) => b.gravity - a.gravity);
 
     return (
       <Layout>
@@ -40,7 +30,7 @@ export default class IndexPage extends React.PureComponent {
                 <div className="market-item__action">-</div>
               </div>
 
-              {marketList.map(({ node: market }) => (
+              {marketList.map(market => (
                 <MarketItem model={market} key={market.id} />
               ))}
             </div>
@@ -77,6 +67,7 @@ export const pageQuery = graphql`
           minOrderQty
           trend24h
           currencyPairCode
+          gravity
         }
       }
     }

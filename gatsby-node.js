@@ -103,9 +103,60 @@ exports.sourceNodes = async ({ actions }) => {
   const currencyList = res[1].data;
 
   // map into these results and create nodes
-  productList.map(market => {
+  productList.map((market, index) => {
     // Create your node object
     const cyy = currencyList.find(i => i.currency === market.base_currency);
+    const getGravity = (m, gindex) => {
+      const value =
+        (m.marginEnabled ? 1 : 0) * 1000 +
+        1 / (m.minOrderQty || 1) +
+        (m.price ? 1 : -1) * 1000 +
+        (!m.disabled ? 1 : -1) * 10000000 +
+        (1000 - gindex);
+
+      return Math.floor(value);
+    };
+
+    const normalize = m => ({
+      productType: m.product_type,
+      code: m.code,
+      name: m.name,
+      marketAsk: m.market_ask,
+      marketBid: m.market_bid,
+      indicator: m.indicator,
+      currency: m.currency,
+      currencyPairCode: m.currency_pair_code,
+      symbol: m.symbol,
+
+      btcMinimumWithdraw: m.btc_minimum_withdraw || 0,
+      fiatMinimumWithdraw: m.fiat_minimum_withdraw || 0,
+
+      pusherChannel: m.pusher_channel,
+      takerFee: m.taker_fee,
+      makerFee: m.maker_fee,
+
+      price: m.last_traded_price,
+      lowMarketBid: m.low_market_bid,
+      highMarketAsk: m.high_market_ask,
+      volume24h: m.volume_24h,
+      trend24h: m.last_price_24h
+        ? (m.last_traded_price - m.last_price_24h) / m.last_price_24h
+        : 0,
+      lastTradedPrice: m.last_traded_price,
+      lastTradedQuantity: m.last_traded_quantity,
+
+      quote: m.quoted_currency,
+      base: m.base_currency,
+      disabled: m.disabled,
+      marginEnabled: m.margin_enabled,
+      cfdEnabled: m.cfd_enablede || false,
+
+      minOrderQty:
+        cyy && cyy.minimum_order_quantity ? cyy.minimum_order_quantity : 0,
+    });
+    const model = normalize(market);
+    model.gravity = getGravity(model, index);
+
     const productNode = {
       // Required fields
       id: `${market.id}`,
@@ -116,43 +167,7 @@ exports.sourceNodes = async ({ actions }) => {
         // but it is required
       },
       children: [],
-
-      productType: market.product_type,
-      code: market.code,
-      name: market.name,
-      marketAsk: market.market_ask,
-      marketBid: market.market_bid,
-      indicator: market.indicator,
-      currency: market.currency,
-      currencyPairCode: market.currency_pair_code,
-      symbol: market.symbol,
-
-      btcMinimumWithdraw: market.btc_minimum_withdraw || 0,
-      fiatMinimumWithdraw: market.fiat_minimum_withdraw || 0,
-
-      pusherChannel: market.pusher_channel,
-      takerFee: market.taker_fee,
-      makerFee: market.maker_fee,
-
-      price: market.last_traded_price,
-      lowMarketBid: market.low_market_bid,
-      highMarketAsk: market.high_market_ask,
-      volume24h: market.volume_24h,
-      trend24h: market.last_price_24h
-        ? (market.last_traded_price - market.last_price_24h) /
-          market.last_price_24h
-        : 0,
-      lastTradedPrice: market.last_traded_price,
-      lastTradedQuantity: market.last_traded_quantity,
-
-      quote: market.quoted_currency,
-      base: market.base_currency,
-      disabled: market.disabled,
-      marginEnabled: market.margin_enabled,
-      cfdEnabled: market.cfd_enablede || false,
-
-      minOrderQty:
-        cyy && cyy.minimum_order_quantity ? cyy.minimum_order_quantity : 0,
+      ...model,
     };
 
     // Get content digest of node. (Required field)
