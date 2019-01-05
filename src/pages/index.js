@@ -26,8 +26,8 @@ export default class IndexPage extends React.PureComponent {
             <h3>Markets</h3>
             <div className="market-list">
               <div className="market-item market-item--header">
-                <div className="market-item__icon">No.</div>
-                <div className="market-item__name">Pair</div>
+                <div className="market-item__icon">Pair</div>
+                <div className="market-item__name"></div>
                 <div className="market-item__price">Price</div>
                 <div className="market-item__24h">24H%</div>
                 <div className="market-item__fee">Fee% (taker/maker)</div>

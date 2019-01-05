@@ -1,11 +1,12 @@
 import React from 'react';
-import classnames from 'classnames';
+import clname from 'classnames';
+
 import formatPrice from '../utils/formatPrice';
 import formatPercent from '../utils/formatPercent';
 
 const MarketItem = ({ model }) => {
   return (
-    <div className="market-item">
+    <div className={clname({ 'market-item': true, disabled: model.disabled })}>
       <div className="market-item__icon">
         <img className="img" src={`https://assets.liquid.com/currencies/${model.base}.svg`} alt="" />
       </div>
@@ -27,7 +28,7 @@ const MarketItem = ({ model }) => {
       <div className="market-item__action">
         <a href={`https://app.liquid.com/exchange/${model.currencyPairCode}`} target="_blank">Spot</a>
         <span>・</span>
-        <a className={classnames({ linkDisabled: !model.marginEnabled })}
+        <a className={clname({ disabled: !model.marginEnabled })}
           href={`https://app.liquid.com/margin/${model.currencyPairCode}`}
           target="_blank">Margin</a>
       </div>
