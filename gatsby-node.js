@@ -103,15 +103,16 @@ exports.sourceNodes = async ({ actions }) => {
   const currencyList = res[1].data;
 
   // map into these results and create nodes
-  productList.map(market => {
+  productList.map((market, index) => {
     // Create your node object
     const cyy = currencyList.find(i => i.currency === market.base_currency);
-    const getGravity = m => {
+    const getGravity = (m, gindex) => {
       const value =
         (m.marginEnabled ? 1 : 0) * 1000 +
         1 / (m.minOrderQty || 1) +
         (m.price ? 1 : -1) * 1000 +
-        (!m.disabled ? 1 : -1) * 10000000;
+        (!m.disabled ? 1 : -1) * 10000000 +
+        gindex;
 
       return Math.floor(value);
     };
@@ -154,7 +155,7 @@ exports.sourceNodes = async ({ actions }) => {
         cyy && cyy.minimum_order_quantity ? cyy.minimum_order_quantity : 0,
     });
     const model = normalize(market);
-    model.gravity = getGravity(model);
+    model.gravity = getGravity(model, index);
 
     const productNode = {
       // Required fields
