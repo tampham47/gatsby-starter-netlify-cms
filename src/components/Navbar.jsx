@@ -5,8 +5,8 @@ const Navbar = class extends React.PureComponent {
     return (
       <header className="header">
         <div className="container header__body">
-          <a className="header__title" href="/">LQD.fanmade</a>
-          <nav>
+          <a className="header__title" href="/">Liquid.fan</a>
+          {/* <nav>
             <ul className="header__nav">
               <li className="header__nav-item">
                 <a href="/markets">Markets</a>
@@ -15,7 +15,7 @@ const Navbar = class extends React.PureComponent {
                 <a href="/assets">Assets</a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </header>
     );

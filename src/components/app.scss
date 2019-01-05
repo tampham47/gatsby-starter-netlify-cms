@@ -10,7 +10,15 @@
     display: flex;
     align-items: center;
   }
-  &__title {}
+  &__title {
+    // the height of header should be 64xp
+    margin-left: -1rem;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 20px 1rem;
+    line-height: 24px;
+  }
 
   &__nav {}
 
