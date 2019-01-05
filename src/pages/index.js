@@ -4,15 +4,6 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import MarketItem from '../components/MarketItem';
 
-const getOrderValue = p => {
-  const value =
-    (p.marginEnabled ? 1 : 0) * 1000 +
-    1 / (p.minOrderQty || 1) +
-    (p.price ? 1 : -1) * 1000 +
-    (!p.disabled ? 1 : -1) * 10000000;
-
-  return value;
-};
 export default class IndexPage extends React.Component {
   render() {
     const { data } = this.props;
@@ -21,11 +12,7 @@ export default class IndexPage extends React.Component {
 
     const marketList = tmpList
       .map(i => i.node)
-      .sort((a, b) => {
-        const da = getOrderValue(a);
-        const db = getOrderValue(b);
-        return db - da;
-      });
+      .sort((a, b) => b.gravity - a.gravity);
 
     return (
       <Layout>
@@ -80,6 +67,7 @@ export const pageQuery = graphql`
           minOrderQty
           trend24h
           currencyPairCode
+          gravity
         }
       }
     }
