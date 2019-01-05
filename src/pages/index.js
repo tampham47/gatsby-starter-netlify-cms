@@ -1,44 +1,44 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link, graphql } from 'gatsby'
+import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
+import MarketItem from '../components/MarketItem'
 
-export default class IndexPage extends React.Component {
+export default class IndexPage extends React.PureComponent {
   render() {
-    const { data } = this.props
-    const { edges: posts } = data.allMarkdownRemark
+    const { edges: tmpList } = this.props.data.allProduct;
+    const marketList = tmpList.sort((a, b) => {
+      const da = (a.node.marginEnabled ? 1 : 0) * 1000
+        + (1 / (a.node.minOrderQty || 1))
+        + ((a.node.price ? 1 : -1) * 1000)
+        + ((!a.node.disabled ? 1 : -1) * 10000000);
+      const db = (b.node.marginEnabled ? 1 : 0) * 1000
+        + (1 / (b.node.minOrderQty || 1))
+        + ((b.node.price ? 1 : -1) * 1000)
+        + ((!b.node.disabled ? 1 : -1) * 10000000);
+      return db - da;
+    });
 
     return (
       <Layout>
-        <section className="section">
+        <section className="market">
           <div className="container">
-            <div className="content">
-              <h1 className="has-text-weight-bold is-size-2">Latest Stories</h1>
-            </div>
-            {posts
-              .map(({ node: post }) => (
-                <div
-                  className="content"
-                  style={{ border: '1px solid #333', padding: '2em 4em' }}
-                  key={post.id}
-                >
-                  <p>
-                    <Link className="has-text-primary" to={post.fields.slug}>
-                      {post.frontmatter.title}
-                    </Link>
-                    <span> &bull; </span>
-                    <small>{post.frontmatter.date}</small>
-                  </p>
-                  <p>
-                    {post.excerpt}
-                    <br />
-                    <br />
-                    <Link className="button is-small" to={post.fields.slug}>
-                      Keep Reading →
-                    </Link>
-                  </p>
-                </div>
+            <h3>Markets</h3>
+            <div className="market-list">
+              <div className="market-item market-item--header">
+                <div className="market-item__icon">Pair</div>
+                <div className="market-item__name"></div>
+                <div className="market-item__price">Price</div>
+                <div className="market-item__24h">24H%</div>
+                <div className="market-item__fee">Fee% (taker/maker)</div>
+                <div className="market-item__order-qty">Min order qty.</div>
+                <div className="market-item__action">-</div>
+              </div>
+
+              {marketList.map(({ node: market }) => (
+                <MarketItem model={market} key={market.id} />
               ))}
+            </div>
           </div>
         </section>
       </Layout>
@@ -48,7 +48,7 @@ export default class IndexPage extends React.Component {
 
 IndexPage.propTypes = {
   data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
+    allProduct: PropTypes.shape({
       edges: PropTypes.array,
     }),
   }),
@@ -56,22 +56,22 @@ IndexPage.propTypes = {
 
 export const pageQuery = graphql`
   query IndexQuery {
-    allMarkdownRemark(
-      sort: { order: DESC, fields: [frontmatter___date] },
-      filter: { frontmatter: { templateKey: { eq: "blog-post" } }}
-    ) {
+    allProduct {
       edges {
         node {
-          excerpt(pruneLength: 400)
           id
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            templateKey
-            date(formatString: "MMMM DD, YYYY")
-          }
+          price
+          takerFee
+          makerFee
+          volume24h
+          quote
+          base
+          disabled
+          marginEnabled
+          cfdEnabled
+          minOrderQty
+          trend24h
+          currencyPairCode
         }
       }
     }
