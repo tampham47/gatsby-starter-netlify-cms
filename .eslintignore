@@ -6,3 +6,6 @@ static/admin/*.bundle.*
 .DS_Store
 yarn-error.log
 .eslint.log
+
+# temporarily ignore
+src/cms

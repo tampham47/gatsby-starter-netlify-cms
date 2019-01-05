@@ -51,7 +51,8 @@ BlogPostTemplate.propTypes = {
   contentComponent: PropTypes.func,
   description: PropTypes.string,
   title: PropTypes.string,
-  helmet: PropTypes.object,
+  helmet: PropTypes.shape({}),
+  tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 const BlogPost = ({ data }) => {

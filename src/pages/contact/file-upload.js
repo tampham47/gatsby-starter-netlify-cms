@@ -2,9 +2,11 @@ import React from 'react';
 import { navigate } from 'gatsby-link';
 import Layout from '../../components/Layout';
 
+/* eslint-disable */
 function encode(data) {
   const formData = new FormData();
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const key of Object.keys(data)) {
     formData.append(key, data[key]);
   }

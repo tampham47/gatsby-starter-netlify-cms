@@ -1,21 +1,26 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import MarketItem from '../components/MarketItem'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'gatsby';
+import Layout from '../components/Layout';
+import MarketItem from '../components/MarketItem';
 
 export default class IndexPage extends React.PureComponent {
   render() {
-    const { edges: tmpList } = this.props.data.allProduct;
+    const { data } = this.props;
+    const { allProduct } = data;
+    const { edges: tmpList } = allProduct;
+
     const marketList = tmpList.sort((a, b) => {
-      const da = (a.node.marginEnabled ? 1 : 0) * 1000
-        + (1 / (a.node.minOrderQty || 1))
-        + ((a.node.price ? 1 : -1) * 1000)
-        + ((!a.node.disabled ? 1 : -1) * 10000000);
-      const db = (b.node.marginEnabled ? 1 : 0) * 1000
-        + (1 / (b.node.minOrderQty || 1))
-        + ((b.node.price ? 1 : -1) * 1000)
-        + ((!b.node.disabled ? 1 : -1) * 10000000);
+      const da =
+        (a.node.marginEnabled ? 1 : 0) * 1000 +
+        1 / (a.node.minOrderQty || 1) +
+        (a.node.price ? 1 : -1) * 1000 +
+        (!a.node.disabled ? 1 : -1) * 10000000;
+      const db =
+        (b.node.marginEnabled ? 1 : 0) * 1000 +
+        1 / (b.node.minOrderQty || 1) +
+        (b.node.price ? 1 : -1) * 1000 +
+        (!b.node.disabled ? 1 : -1) * 10000000;
       return db - da;
     });
 
@@ -27,7 +32,7 @@ export default class IndexPage extends React.PureComponent {
             <div className="market-list">
               <div className="market-item market-item--header">
                 <div className="market-item__icon">Pair</div>
-                <div className="market-item__name"></div>
+                <div className="market-item__name" />
                 <div className="market-item__price">Price</div>
                 <div className="market-item__24h">24H%</div>
                 <div className="market-item__fee">Fee% (taker/maker)</div>
@@ -42,7 +47,7 @@ export default class IndexPage extends React.PureComponent {
           </div>
         </section>
       </Layout>
-    )
+    );
   }
 }
 
@@ -52,7 +57,7 @@ IndexPage.propTypes = {
       edges: PropTypes.array,
     }),
   }),
-}
+};
 
 export const pageQuery = graphql`
   query IndexQuery {
@@ -76,4 +81,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

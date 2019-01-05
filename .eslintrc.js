@@ -25,6 +25,7 @@ module.exports = {
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 0,
     "import/extensions": 0,
+    "react/require-default-props": 0,
 
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead

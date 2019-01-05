@@ -1,4 +1,5 @@
 import React from 'react';
+import Types from 'prop-types';
 import { kebabCase } from 'lodash';
 import Helmet from 'react-helmet';
 import { Link, graphql } from 'gatsby';
@@ -37,6 +38,17 @@ const TagsPage = ({
     </section>
   </Layout>
 );
+
+TagsPage.propTypes = {
+  data: Types.shape({
+    allMarkdownRemark: Types.shape({}),
+    site: Types.shape({
+      siteMetadata: Types.shape({
+        title: Types.string,
+      }),
+    }),
+  }),
+};
 
 export default TagsPage;
 

@@ -20,7 +20,8 @@
     line-height: 24px;
   }
 
-  &__nav {}
+  &__nav {
+  }
 
   &__nav-item {
     display: inline-block;
@@ -31,7 +32,8 @@
   }
 }
 
-.market-list {}
+.market-list {
+}
 .market-item {
   display: flex;
   align-items: center;
@@ -49,7 +51,7 @@
     font-size: 14px;
   }
 
-  &>div {
+  & > div {
     margin-right: 1rem;
 
     &:last-child {
