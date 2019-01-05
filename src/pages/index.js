@@ -19,11 +19,13 @@ export default class IndexPage extends React.PureComponent {
     const { allProduct } = data;
     const { edges: tmpList } = allProduct;
 
-    const marketList = tmpList.sort((a, b) => {
-      const da = getOrderValue(a.node);
-      const db = getOrderValue(b.node);
-      return db - da;
-    });
+    const marketList = tmpList
+      .sort((a, b) => {
+        const da = getOrderValue(a.node);
+        const db = getOrderValue(b.node);
+        return db - da;
+      })
+      .map(i => i.node);
 
     return (
       <Layout>
@@ -41,7 +43,7 @@ export default class IndexPage extends React.PureComponent {
                 <div className="market-item__action">-</div>
               </div>
 
-              {marketList.map(({ node: market }) => (
+              {marketList.map(market => (
                 <MarketItem model={market} key={market.id} />
               ))}
             </div>
