@@ -5,27 +5,27 @@ import Layout from '../components/Layout';
 import MarketItem from '../components/MarketItem';
 
 const getOrderValue = p => {
-  const value = (p.marginEnabled ? 1 : 0) * 1000;
-  // (p.marginEnabled ? 1 : 0) * 1000 +
-  // 1 / (p.minOrderQty || 1) +
-  // (p.price ? 1 : -1) * 1000 +
-  // (!p.disabled ? 1 : -1) * 10000000;
+  const value =
+    (p.marginEnabled ? 1 : 0) * 1000 +
+    1 / (p.minOrderQty || 1) +
+    (p.price ? 1 : -1) * 1000 +
+    (!p.disabled ? 1 : -1) * 10000000;
 
   return value;
 };
-export default class IndexPage extends React.PureComponent {
+export default class IndexPage extends React.Component {
   render() {
     const { data } = this.props;
     const { allProduct } = data;
     const { edges: tmpList } = allProduct;
 
     const marketList = tmpList
+      .map(i => i.node)
       .sort((a, b) => {
-        const da = getOrderValue(a.node);
-        const db = getOrderValue(b.node);
+        const da = getOrderValue(a);
+        const db = getOrderValue(b);
         return db - da;
-      })
-      .map(i => i.node);
+      });
 
     return (
       <Layout>
