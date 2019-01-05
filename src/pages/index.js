@@ -41,7 +41,7 @@ export default class IndexPage extends React.PureComponent {
               </div>
 
               {marketList.map(({ node: market }) => (
-                <MarketItem model={market} key={market.id} />
+                <MarketItem model={market} key={market.currencyPairCode} />
               ))}
             </div>
           </div>
