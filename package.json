@@ -40,16 +40,39 @@
   "license": "MIT",
   "main": "n/a",
   "scripts": {
-    "start": "npm run develop",
-    "clean": "rimraf .cache public",
+    "eslint": "eslint --ext .jsx,.js ./",
+    "fix-eslint": "eslint --ext .jsx,.js ./ --fix",
+    "prettier": "prettier --ignore-path ./.gitignore ./**/*.{js,jsx,json,scss,md} --write",
     "build": "npm run clean && gatsby build",
-    "develop": "npm run clean && gatsby develop",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "gatsby serve",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"{gatsby-*.js,src/**/*.js}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf .cache public",
+    "develop": "npm run clean && gatsby develop",
+    "start": "npm run develop"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,scss,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "prettier": "^1.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-css-modules": "^2.10.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.2.1",
+    "lint-staged": "^8.1.0",
     "rimraf": "^2.6.2"
   }
 }
