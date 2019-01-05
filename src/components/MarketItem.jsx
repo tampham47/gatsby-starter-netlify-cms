@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import formatPrice from '../utils/formatPrice';
 import formatPercent from '../utils/formatPercent';
 
@@ -25,8 +26,10 @@ const MarketItem = ({ model }) => {
       <div className="market-item__order-qty">{model.minOrderQty}</div>
       <div className="market-item__action">
         <a href={`https://app.liquid.com/exchange/${model.currencyPairCode}`} target="_blank">Spot</a>
-        <span>•</span>
-        <a href={`https://app.liquid.com/margin/${model.currencyPairCode}`} target="_blank">Margin</a>
+        <span>・</span>
+        <a className={classnames({ linkDisabled: !model.marginEnabled })}
+          href={`https://app.liquid.com/margin/${model.currencyPairCode}`}
+          target="_blank">Margin</a>
       </div>
     </div>
   );
