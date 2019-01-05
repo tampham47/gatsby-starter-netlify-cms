@@ -5,10 +5,11 @@ import Layout from '../components/Layout';
 import MarketItem from '../components/MarketItem';
 
 const getOrderValue = p => {
-  const value =
-    (p.marginEnabled ? 1 : 0) * 1000 +
-    (p.price ? 1 : -1) * 1000 +
-    (!p.disabled ? 1 : -1) * 10000000;
+  const value = (p.marginEnabled ? 1 : 0) * 1000;
+  // (p.marginEnabled ? 1 : 0) * 1000 +
+  // 1 / (p.minOrderQty || 1) +
+  // (p.price ? 1 : -1) * 1000 +
+  // (!p.disabled ? 1 : -1) * 10000000;
 
   return value;
 };
