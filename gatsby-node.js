@@ -112,7 +112,7 @@ exports.sourceNodes = async ({ actions }) => {
         1 / (m.minOrderQty || 1) +
         (m.price ? 1 : -1) * 1000 +
         (!m.disabled ? 1 : -1) * 10000000 +
-        gindex;
+        (1000 - gindex);
 
       return Math.floor(value);
     };
