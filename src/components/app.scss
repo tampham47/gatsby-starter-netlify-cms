@@ -72,13 +72,22 @@
   &__name {
     flex: 1;
   }
-  &__24h {
-    flex: 2;
+  &__price {
+    flex: 3;
     text-align: right;
   }
-  &__price {
-    flex: 2;
+  &__24h {
+    flex: 1;
     text-align: right;
+  }
+  .market-item__24h {
+    margin-right: 0;
+  }
+
+  &__fee,
+  &__order-qty,
+  &__action {
+    display: none;
   }
   &__fee {
     flex: 2;
@@ -94,10 +103,32 @@
   }
 }
 
+@media screen and (min-width: 48em) {
+  .market-item {
+    &__24h {
+      margin-right: 1rem;
+    }
+
+    &__price {
+      flex: 2;
+    }
+
+    &__fee,
+    &__order-qty,
+    &__action {
+      display: initial;
+    }
+  }
+}
+
 .disabled {
   pointer-events: none;
   cursor: default;
   text-decoration: none;
   opacity: 0.6;
   color: black;
+}
+
+.market {
+  overflow-x: hidden;
 }
