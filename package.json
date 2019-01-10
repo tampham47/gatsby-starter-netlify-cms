@@ -32,6 +32,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.4.1",
     "react-helmet": "^5.2.0",
+    "react-icons": "^3.3.0",
     "uuid": "^3.2.1"
   },
   "keywords": [
@@ -66,13 +67,13 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^1.15.3",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-css-modules": "^2.10.0",
     "eslint-plugin-prettier": "^3.0.0",
     "husky": "^1.2.1",
     "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
     "rimraf": "^2.6.2"
   }
 }

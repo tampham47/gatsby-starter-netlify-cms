@@ -77,8 +77,27 @@
     text-align: right;
   }
   &__24h {
-    flex: 1;
+    flex: 2;
     text-align: right;
+    min-width: 70px;
+
+    svg {
+      vertical-align: top;
+    }
+
+    &__pill {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 4px;
+      color: white;
+
+      &.up {
+        background-color: #729d39;
+      }
+      &.down {
+        background-color: #cb3737;
+      }
+    }
   }
   .market-item__24h {
     margin-right: 0;
