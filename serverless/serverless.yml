@@ -7,5 +7,5 @@ functions:
     handler: index.trigger
     events:
     - schedule:
-        rate: cron(*/15 * * * ? *)
+        rate: cron(*/30 * * * ? *)
         enabled: true
