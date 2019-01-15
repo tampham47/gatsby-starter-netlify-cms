@@ -89,7 +89,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.sourceNodes = ({ actions }) => {
+exports.sourceNodes = async ({ actions }) => {
   const { createNode } = actions;
-  createProductNode(createNode);
+  await createProductNode(createNode);
+  return 0;
 };

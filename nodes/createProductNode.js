@@ -91,8 +91,10 @@ const createProductNode = async createNode => {
     // Create node with the gatsby createNode() API
     createNode(productNode);
 
-    return 0;
+    return productNode;
   });
+
+  return 0;
 };
 
-export default createProductNode;
+module.exports = createProductNode;
