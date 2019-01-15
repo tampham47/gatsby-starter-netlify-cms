@@ -1,52 +1,63 @@
 const axios = require('axios');
 const crypto = require('crypto');
 
-const normalize = (m, cyy = {}) => ({
-  productType: m.product_type,
-  code: m.code,
-  name: m.name,
-  marketAsk: m.market_ask,
-  marketBid: m.market_bid,
-  indicator: m.indicator,
-  currency: m.currency,
-  currencyPairCode: m.currency_pair_code,
-  symbol: m.symbol,
-
-  btcMinimumWithdraw: m.btc_minimum_withdraw || 0,
-  fiatMinimumWithdraw: m.fiat_minimum_withdraw || 0,
-
-  pusherChannel: m.pusher_channel,
-  takerFee: m.taker_fee,
-  makerFee: m.maker_fee,
-
-  price: m.last_traded_price,
-  lowMarketBid: m.low_market_bid,
-  highMarketAsk: m.high_market_ask,
-  volume24h: m.volume_24h,
-  trend24h: m.last_price_24h
-    ? (m.last_traded_price - m.last_price_24h) / m.last_price_24h
-    : 0,
-  lastTradedPrice: m.last_traded_price,
-  lastTradedQuantity: m.last_traded_quantity,
-
-  quote: m.quoted_currency,
-  base: m.base_currency,
-  disabled: m.disabled,
-  marginEnabled: m.margin_enabled,
-  cfdEnabled: m.cfd_enablede || false,
-
-  minOrderQty: cyy.minimum_order_quantity ? cyy.minimum_order_quantity : 0,
-});
-
-const getGravity = (m, gindex) => {
+const getGravity = m => {
+  const disabledDelta = m.disabled ? 0 : 1;
   const value =
     (m.marginEnabled ? 1 : 0) * 1000 +
+    disabledDelta * (m.price ? 1 : -1) * 1000 +
+    disabledDelta * m.volume24hInUSD +
     1 / (m.minOrderQty || 1) +
-    (m.price ? 1 : -1) * 1000 +
-    (!m.disabled ? 1 : -1) * 10000000 +
-    (1000 - gindex);
+    (m.disabled ? -1 : 0) * 1000000;
 
-  return Math.floor(value);
+  return Math.floor(value || -1000000000);
+};
+
+const normalize = (m, cyy = {}) => {
+  const model = {
+    productType: m.product_type,
+    code: m.code,
+    name: m.name,
+    marketAsk: m.market_ask,
+    marketBid: m.market_bid,
+    indicator: m.indicator,
+    currency: m.currency,
+    currencyPairCode: m.currency_pair_code,
+    symbol: m.symbol,
+
+    btcMinimumWithdraw: m.btc_minimum_withdraw || 0,
+    fiatMinimumWithdraw: m.fiat_minimum_withdraw || 0,
+
+    pusherChannel: m.pusher_channel,
+    takerFee: m.taker_fee,
+    makerFee: m.maker_fee,
+
+    price: parseFloat(m.last_traded_price) || 0,
+    last24hPrice: parseFloat(m.last_price_24h),
+    lowMarketBid: parseFloat(m.low_market_bid),
+    highMarketAsk: parseFloat(m.high_market_ask),
+    volume24h: parseFloat(m.volume_24h),
+    exchangeRate: parseFloat(m.exchange_rate),
+    lastTradedPrice: parseFloat(m.last_traded_price),
+    lastTradedQuantity: parseFloat(m.last_traded_quantity),
+
+    quote: m.quoted_currency,
+    base: m.base_currency,
+    disabled: m.disabled,
+    marginEnabled: m.margin_enabled,
+    cfdEnabled: m.cfd_enabled || false,
+
+    minOrderQty: cyy.minimum_order_quantity ? cyy.minimum_order_quantity : 0,
+  };
+
+  model.volume24hInUSD = model.volume24h * model.price * model.exchangeRate;
+  model.trend24h = model.last24hPrice
+    ? (model.price - model.last24hPrice) / model.last24hPrice
+    : 0;
+
+  model.gravity = getGravity(model);
+
+  return model;
 };
 
 const createProductNode = async createNode => {
@@ -61,11 +72,10 @@ const createProductNode = async createNode => {
   const currencyList = res[1].data;
 
   // map into these results and create nodes
-  productList.map((market, index) => {
+  productList.map(market => {
     // Create your node object
     const cyy = currencyList.find(i => i.currency === market.base_currency);
     const model = normalize(market, cyy);
-    model.gravity = getGravity(model, index);
 
     const productNode = {
       // Required fields
